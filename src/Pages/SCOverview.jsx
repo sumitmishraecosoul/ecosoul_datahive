@@ -146,12 +146,6 @@ const InventoryDashboard = () => {
                                 }))}
                             />
                         </div>
-                        <div className="mb-[4rem]">
-                            <BarGraph title="Inventory Levels & Sales Trends" />
-                        </div>
-                        <div className="mb-[4rem]">
-                            <MetricTable title="Shipment Optimization Comparison" rows={tableRows} columns={inventoryColumns} />
-                        </div>
                     </>
                 );
             case 1: // Quick Commerce tab

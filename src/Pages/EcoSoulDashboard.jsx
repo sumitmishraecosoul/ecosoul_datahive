@@ -17,12 +17,12 @@ const EcoSoulDashboard = () => {
         switch (activePage) {
             case 'supplychain':
                 return <SCOverview />;
-            case 'marketing':
-                return <MarketingDashboard />;
-            case 'sales':
-                return <SalesDashboard />;
-            case 'demand':
-                return <DemandProjection />;
+            case 'digitalMarketing':
+                return <DigitalMarketing />;
+            case 'retailUS':
+                return <RetailUS />;
+            case 'retailIndia':
+                return <RetailIndia />;
             default:
                 return <SCOverview />;
         }
