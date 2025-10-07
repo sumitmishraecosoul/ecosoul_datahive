@@ -39,9 +39,13 @@ const MetricTable = ({ title, rows, columns }) => {
   const baseNodes = Array.isArray(rows) ? rows : [];
 
   const filteredNodes = React.useMemo(() => {
-    if (!appliedSku) return baseNodes;
+    if (!appliedSku || appliedSku.trim() === '') return baseNodes;
     const query = appliedSku.trim().toLowerCase();
-    return baseNodes.filter((item) => String(item.sku || '').toLowerCase().includes(query));
+    return baseNodes.filter((item) => {
+      // Handle different possible SKU field names and data structures
+      const skuValue = item.sku || item.SKU || item.id || item.product_id || '';
+      return String(skuValue).toLowerCase().includes(query);
+    });
   }, [appliedSku, baseNodes]);
 
   React.useEffect(() => {
@@ -68,11 +72,12 @@ const MetricTable = ({ title, rows, columns }) => {
       background-color: #e5e7eb;
       color: #000000;
       text-align: centre;
-      font-weight: 700;
-      font-size: 15px;
-      padding: 16px;
+      font-weight: 500;
+      font-size: 12px;
+      padding: 14px;
       border-bottom: 2px solid #e5e7eb;
       letter-spacing: 0.01em;
+      position: sticky;
     `,
     Body: `
       .tr {
@@ -86,7 +91,7 @@ const MetricTable = ({ title, rows, columns }) => {
       }
       .td {
         padding: 16px;
-        font-size: 15px;
+        font-size: 12px;
         color: #374151;
         border-bottom: 1px solid #f3f4f6;
         text-align: left;
@@ -113,11 +118,27 @@ const MetricTable = ({ title, rows, columns }) => {
         />
         <button
           onClick={() => setAppliedSku(skuInput)}
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md"
+          className="bg-teal-500 hover:bg-teal-600 text-white text-sm font-medium px-4 py-2 rounded-md"
         >
           Search
         </button>
+        {appliedSku && (
+          <button
+            onClick={() => {
+              setAppliedSku('');
+              setSkuInput('');
+            }}
+            className="bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium px-4 py-2 rounded-md"
+          >
+            Clear
+          </button>
+        )}
       </div>
+      {appliedSku && (
+        <div className="text-sm text-gray-600">
+          Showing {filteredNodes.length} of {baseNodes.length} results for "{appliedSku}"
+        </div>
+      )}
       <div className="max-h-96 overflow-y-auto">
         <CompactTable columns={tableColumns} data={data} theme={theme} />
       </div>

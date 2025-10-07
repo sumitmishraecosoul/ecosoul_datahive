@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DotGridBackground from "../components/DotGridBackground";
-import SplitText from "../components/SplitText";
+import DotGridBackground from "../Components/DotGridBackground";
+import SplitText from "../Components/SplitText";
 import thriveLogo from "../assets/thriveLogo.svg";
 
 export default function Login() {
@@ -15,7 +15,7 @@ export default function Login() {
 
   const [errors, setErrors] = useState({});
 
-  const departments = ["Super Admin", "Admin", "Finance", "HR", "Sales"];
+  const departments = ["Supply Chain"];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,7 +48,7 @@ export default function Login() {
     if (Object.keys(validationErrors).length === 0) {
       console.log("Login Success:", formData);
       localStorage.setItem("isLoggedIn", "true");
-      navigate("/path-select");
+      navigate("/ecosouldashboard");
     } else {
       setErrors(validationErrors);
     }

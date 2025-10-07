@@ -3,8 +3,9 @@ import FilterAnalytics from '../Components/FilterAnalytics';
 import MetricCard from '../Components/MetricCard';
 import BarGraph from '../Components/Bargraph';
 import MetricTable from '../Components/MetricTable';
+import DownloadButton from '../Components/DownloadButton';
 import { FaBox, FaMapMarkerAlt, FaPlus, FaMinus, FaShoppingCart, FaFileInvoice, FaTruck, FaWarehouse, FaCheckCircle } from 'react-icons/fa';
-import { getQuickCommerceMetrics, getQuickCommerceData } from '../services/supplychain';
+import { getQuickCommerceMetrics, getQuickCommerceData, getQuickCommerceDataDownload } from '../services/supplychain';
 
 const QuickCommerce = () => {
   const [selectedFilters, setSelectedFilters] = useState({});
@@ -16,7 +17,7 @@ const QuickCommerce = () => {
       try {
         const data = await getQuickCommerceMetrics({
           sku: selectedFilters?.sku?.value || '',
-          location: '',
+          location: selectedFilters?.location?.value || '',
           stockStatus: '',
         });
         setMetrics(data || {});
@@ -25,13 +26,14 @@ const QuickCommerce = () => {
       }
     };
     fetchMetrics();
-  }, [selectedFilters?.sku?.value]);
+  }, [selectedFilters?.sku?.value, selectedFilters?.location?.value]);
 
   useEffect(() => {
     const fetchRows = async () => {
       try {
         const data = await getQuickCommerceData({
           sku: selectedFilters?.sku?.value || '',
+          location: selectedFilters?.location?.value || '',
         });
         const list = Array.isArray(data) ? data : (Array.isArray(data?.rows) ? data.rows : []);
         setRows(list);
@@ -40,13 +42,31 @@ const QuickCommerce = () => {
       }
     };
     fetchRows();
-  }, [selectedFilters?.sku?.value]);
+  }, [selectedFilters?.sku?.value, selectedFilters?.location?.value]);
 
   const formatNumber = (value) => {
     if (value === null || value === undefined) return '-';
     if (typeof value === 'number') return value.toLocaleString('en-IN');
     const num = Number(value);
     return Number.isNaN(num) ? String(value) : num.toLocaleString('en-IN');
+  };
+
+  const handleDownload = async () => {
+    try {
+      const data = await getQuickCommerceDataDownload();
+      // Create a blob from the CSV data
+      const blob = new Blob([data], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'EcoSoul-quickcomm_invoice_SD.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download failed:', error);
+    }
   };
 
   const tableColumns = [
@@ -69,6 +89,7 @@ const QuickCommerce = () => {
 
   const filterConfig = [
     { key: 'sku', label: 'SKU', placeholder: 'e.g. CRCBOZ10NL' },
+    { key: 'location', label: 'Location', placeholder: 'e.g. Bangalore' },
   ];
 
   return (
@@ -76,8 +97,9 @@ const QuickCommerce = () => {
       <div className="space-y-6">
         {/* Header with Filters */}
         <div className='bg-white p-6 rounded-lg shadow-lg border border-gray-200'>
-          <div className='flex flex-row items-center gap-3 mb-6'>
+          <div className='flex flex-row items-center justify-between mb-6'>
             <h1 className='text-2xl font-bold text-gray-800'>Quick Ecommerce</h1>
+            <DownloadButton onClick={handleDownload} />
           </div>
           <FilterAnalytics
             title="Filters"
@@ -133,7 +155,7 @@ const QuickCommerce = () => {
         
 
         {/* Table Section */}
-        <MetricTable title="Quick Commerce Details" rows={rows} columns={tableColumns} />
+        <MetricTable rows={rows} columns={tableColumns} />
 
       </div>
     </div>

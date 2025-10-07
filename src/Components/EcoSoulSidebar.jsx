@@ -18,37 +18,6 @@ const EcoSoulSidebar = ({ activePage, onPageChange }) => {
         </svg>
       )
     },
-    {
-      id: 'retialIndia',
-      label: 'Retail India',
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M3 3v18h18V3H3zm16 16H5V5h14v14z"/>
-          <path d="M7 12l2-2 2 2 4-4 2 2v6H7v-4z"/>
-        </svg>
-      )
-    },
-    {
-      id: 'retailUS',
-      label: 'Retail US',
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <rect x="4" y="16" width="4" height="8"/>
-          <rect x="10" y="12" width="4" height="12"/>
-          <rect x="16" y="8" width="4" height="16"/>
-        </svg>
-      )
-    },
-    {
-      id: 'digitalMarketing',
-      label: 'Digital Marketing',
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" fill="none"/>
-          <text x="12" y="16" textAnchor="middle" fontSize="8" fontWeight="bold">Ad</text>
-        </svg>
-      )
-    }
   ]
 
   return (

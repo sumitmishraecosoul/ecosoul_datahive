@@ -28,6 +28,10 @@ export default function AppRoutes() {
         element={isAuthenticated() ? <EcoSoulDashboard /> : <Navigate to="/login" replace />}
       />
       <Route
+        path="/ecosouldashboard"
+        element={isAuthenticated() ? <EcoSoulDashboard /> : <Navigate to="/login" replace />}
+      />
+      <Route
         path="/supplychain"
         element={isAuthenticated() ? <SCOverview /> : <Navigate to="/login" replace />}
       />

@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { IoIosNotifications } from "react-icons/io";
 import { CiSettings } from "react-icons/ci";
 import { CiUser } from "react-icons/ci";
+import thriveLogo from "../assets/thriveLogo.svg";
 
 const EcoSoulNavbar = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -21,8 +24,14 @@ const EcoSoulNavbar = () => {
     }, []);
 
     const handleLogout = () => {
-        // Add logout logic here
-        console.log('Logout clicked');
+        // Clear any stored authentication data
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        
+        // Navigate to login page
+        navigate('/login');
+        
+        // Close dropdown
         setIsDropdownOpen(false);
     };
 
@@ -36,13 +45,13 @@ const EcoSoulNavbar = () => {
         <div className="bg-white shadow-sm border-b border-gray-200 h-16 flex items-center justify-between px-6">
 
             <div className="flex items-center">
-                <h1 className="text-2xl font-bold text-gray-800">Inventory Dashboard</h1>
+                <img src={thriveLogo} alt="Thrive Logo" className="w-20 h-auto"/>
             </div>
             <div className="flex items-center space-x-4">
                 <div className="relative" ref={dropdownRef}>
                     <button 
                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                        className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors duration-200"
+                        className="p-2 bg-teal-500 text-white rounded-full hover:bg-teal-600 transition-colors duration-200"
                     >
                         <CiUser size={20} />
                     </button>
