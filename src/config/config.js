@@ -1,3 +1,3 @@
-const DEV_URL = "https://api.worklytics.thrivebrands.ai";
+const DEV_URL = "https://worklyticsapi.thrivebrands.ai/";
 
 export const API_URL = DEV_URL;
